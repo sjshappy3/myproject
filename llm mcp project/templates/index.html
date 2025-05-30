@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知行旅游 - 旅游助手</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+<img src="/static/images/logo.png" alt="知行旅游 Logo" class="h-8 w-auto">
+<h1 class="text-4xl font-bold text-gray-800">知行旅游</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#"><img src="{{ url_for('static', path='/images/chat-icon.svg') }}" alt=""> 会话</a></li>
+                    <li><a href="#"><img src="{{ url_for('static', path='/images/build-icon.svg') }}" alt=""> 构建</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="#"><img src="{{ url_for('static', path='/images/github-icon.svg') }}" alt="GitHub"></a>
+                <a href="#"><img src="{{ url_for('static', path='/images/help-icon.svg') }}" alt="Help"></a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="new-chat-btn">
+                    <img src="{{ url_for('static', path='/images/plus-icon.svg') }}" alt="">
+                    <span>新建会话</span>
+                </div>
+                <div class="user-profile">
+                    <img src="{{ url_for('static', path='/images/user-avatar.png') }}" alt="User Avatar">
+                </div>
+            </header>
+
+            <section class="hero-section">
+                <img src="{{ url_for('static', path='/images/hero-logo.png') }}" alt="知行旅游" class="hero-logo">
+                <h2>知行旅游</h2>
+                <form action="/search" method="post" class="search-form">
+                    <input type="text" name="city" placeholder="请输入旅游城市名称，例如：北京" required 
+                           value="{{ city if city else '' }}">
+                    <button type="submit">
+                        <img src="{{ url_for('static', path='/images/search-icon.svg') }}" alt="搜索">
+                    </button>
+                </form>
+            </section>
+
+            {% if error_message %}
+                <div class="results-grid">
+                    <div class="card error-card">
+                        <h3>查询出错</h3>
+                        <p>{{ error_message }}</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if city and guide_data %}
+            <div class="results-section">
+                <h3>{{ city }} - 旅游攻略与建议</h3>
+                <div class="results-grid" data-masonry='{ "itemSelector": ".card", "columnWidth": ".grid-sizer", "percentPosition": true, "gutter": 20 }'>
+                    <div class="grid-sizer"></div>
+                    
+                    {% if guide_data.attractions %}
+                    <div class="card attractions-card">
+                        {% if images.attractions_image %}
+                        <img src="{{ images.attractions_image }}" alt="{{ city }}景点" class="card-img-top" loading="lazy" onerror="this.onerror=null; this.src='{{ url_for('static', path='images/placeholder-image.png') }}';">
+                        {% else %}
+                        <img src="{{ url_for('static', path='images/placeholder-image.png') }}" alt="{{ city }}景点" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body">
+                            <h4><img src="{{ url_for('static', path='/images/attractions-icon.svg') }}" alt=""> 经典景点</h4>
+                            <p>{{ guide_data.attractions | replace('\n', '<br>') | safe }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if guide_data.itinerary %}
+                    <div class="card itinerary-card">
+                        {% if images.itinerary_image %}
+                        <img src="{{ images.itinerary_image }}" alt="{{ city }}游玩路线" class="card-img-top" onerror="this.onerror=null; this.src='{{ url_for('static', path='images/placeholder-image.png') }}';">
+                        {% else %}
+                        {# Optionally show a placeholder if no image, or just omit the img tag #}
+                        {% endif %}
+                        <div class="card-body">
+                            <h4><img src="{{ url_for('static', path='/images/itinerary-icon.svg') }}" alt=""> 游玩路线</h4>
+                            <p>{{ guide_data.itinerary | replace('\n', '<br>') | safe }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if guide_data.food %}
+                    <div class="card food-card">
+                        {% if images.food_image %}
+                        <img src="{{ images.food_image }}" alt="{{ city }}美食" class="card-img-top" loading="lazy" onerror="this.onerror=null;this.src='{{ url_for('static', path='images/placeholder-image.png') }}';">
+                        {% else %}
+                        <img src="{{ url_for('static', path='images/placeholder-image.png') }}" alt="{{ city }}美食" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body">
+                            <h4><img src="{{ url_for('static', path='/images/food-icon.svg') }}" alt=""> 美食推荐</h4>
+                            <p>{{ guide_data.food | replace('\n', '<br>') | safe }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if guide_data.accommodation_general %}
+                    <div class="card accommodation-card">
+                        <div class="card-body">
+                            <h4><img src="{{ url_for('static', path='/images/accommodation-icon.svg') }}" alt=""> 住宿建议</h4>
+                            <p>{{ guide_data.accommodation_general | replace('\n', '<br>') | safe }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if amap_data %}
+                    <div class="card traffic-card">
+                        <div class="card-body">
+                            <h4><img src="{{ url_for('static', path='/images/traffic-icon.svg') }}" alt=""> 交通出行与地图</h4>
+                            {% if amap_data.traffic_info %}
+                            <p>{{ amap_data.traffic_info }}</p>
+                            {% endif %}
+                            <div id="map-container" style="height: 300px; width: 100%; margin-top: 15px; border-radius: 8px;"></div>
+                            {% if amap_data.poi_data and amap_data.poi_data|length > 0 %}
+                                <p style="margin-top:10px; font-size: 0.9em;"><strong>地图推荐地点:</strong></p>
+                                <ul style="font-size: 0.85em; padding-left: 20px;">
+                                    {% for poi in amap_data.poi_data %}
+                                        <li>{{ poi.name }} - {{ poi.address }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p style="margin-top:10px; font-size: 0.9em;">未能在地图上定位到具体推荐地点。</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+        </main>
+    </div>
+    <!-- AMAP JavaScript API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=YOUR_AMAP_WEB_JS_KEY"></script>
+    <script>
+        window.onload = () => {
+            const grid = document.querySelector('.results-grid');
+            if (grid) {
+                // Ensure images are loaded before initializing Masonry for better layout
+                const masonry = new Masonry(grid, {
+                    itemSelector: '.card',
+                    columnWidth: '.grid-sizer',
+                    percentPosition: true,
+                    gutter: 20,
+                    initLayout: false // Initialize Masonry after images are loaded
+                });
+                // Use imagesLoaded library or a similar approach if available for more robust image loading detection
+                // For simplicity, we'll just re-layout after a short delay or rely on window.onload for basic cases.
+                masonry.layout();
+            }
+
+            // Initialize Amap
+            const mapContainer = document.getElementById('map-container');
+            if (mapContainer) {
+                {% if amap_data and amap_data.poi_data and amap_data.poi_data|length > 0 %}
+                    const firstPoiLocationString = "{{ amap_data.poi_data[0].location }}";
+                    if (firstPoiLocationString && firstPoiLocationString !== 'None' && firstPoiLocationString.includes(',')) {
+                        const firstPoiLocation = firstPoiLocationString.split(',');
+                        const mapCenter = [parseFloat(firstPoiLocation[0]), parseFloat(firstPoiLocation[1])];
+                        
+                        var map = new AMap.Map('map-container', {
+                            zoom: 13,
+                            center: mapCenter,
+                            viewMode: '2D'
+                        });
+
+                        AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.Marker'], function(){
+                            map.addControl(new AMap.ToolBar());
+                            map.addControl(new AMap.Scale());
+
+                            {% for poi in amap_data.poi_data %}
+                                {% if poi.location and poi.location != 'None' and poi.location.includes(',') %}
+                                    const loc = "{{ poi.location }}".split(',');
+                                    if (loc.length === 2) {
+                                        const marker = new AMap.Marker({
+                                            position: [parseFloat(loc[0]), parseFloat(loc[1])],
+                                            title: "{{ poi.name }}"
+                                        });
+                                        map.add(marker);
+                                    }
+                                {% endif %}
+                            {% endfor %}
+                        });
+                    } else {
+                        initializeDefaultMap('map-container', '首个推荐地点位置信息无效，地图将显示默认中心。');
+                    }
+                {% elif city %}
+                     initializeDefaultMap('map-container', '未能加载详细地图信息或当前城市未找到具体推荐地点。');
+                {% else %}
+                     mapContainer.innerHTML = '<p style="text-align:center; padding-top: 50px; color: #777;">请输入城市进行搜索以查看地图。</p>';
+                {% endif %}
+            }
+        };
+
+        function initializeDefaultMap(containerId, message) {
+            const mapDiv = document.getElementById(containerId);
+            if (!mapDiv) return;
+            var map = new AMap.Map(containerId, {
+                zoom: 10,
+                center: [116.397428, 39.90923], // Default to Beijing
+                viewMode: '2D'
+            });
+            AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], function(){
+                map.addControl(new AMap.ToolBar());
+                map.addControl(new AMap.Scale());
+            });
+            // Add a message inside the map container if it's a fallback
+            const messageElement = document.createElement('p');
+            messageElement.style.textAlign = 'center';
+            messageElement.style.paddingTop = '50px';
+            messageElement.style.color = '#777';
+            messageElement.textContent = message;
+            // Clear previous content and add message, but ensure map is still there
+            // A better way would be to overlay this message if map init fails or shows default
+            if(mapDiv.firstChild) { mapDiv.insertBefore(messageElement, mapDiv.firstChild); } else { mapDiv.appendChild(messageElement);}
+        }
+    </script>
+</body>
+</html>

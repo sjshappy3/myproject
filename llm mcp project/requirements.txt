@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-dotenv
+requests
+# Add any other specific dependencies for MCPs if needed, e.g., their SDKs
+# For now, assuming MCPs are called via HTTP requests or existing libraries
