@@ -27,6 +27,17 @@
 - **用户认证**: 注册、登录、会话管理
 - **缓存管理**: 缓存统计、清理、优化
 - **数据管理**: 用户数据和旅游数据管理
+- ![屏幕截图 2025-05-30 200557](https://github.com/user-attachments/assets/7dbf339f-5983-4cfe-ba86-fc1984bb7046)
+![屏幕截图 2025-05-30 200557](https://github.com/user-attachments/assets/e03c78fb-2fc7-4a60-858f-b2f2247fb10d)
+![屏幕截图 2025-05-30 200550](https://github.com/user-attachments/assets/8f80cb67-47aa-43df-9b8c-aa520cbbd964)
+![屏幕截图 2025-05-30 200532](https://github.com/user-attachments/assets/d7d1bb53-ed34-434b-9a98-3939b281ca24)
+![屏幕截图 2025-05-30 200522](https://github.com/user-attachments/assets/e382b7a0-7741-440b-8565-46d8ff0b3c04)
+![屏幕截图 2025-05-30 184114](https://github.com/user-attachments/assets/8730b543-6714-4884-98c2-512417b899e7)
+![屏幕截图 2025-05-30 184042](https://github.com/user-attachments/assets/a15a60b7-57ec-4e5f-8f5b-b63547bb5744)
+![屏幕截图 2025-05-30 184024](https://github.com/user-attachments/assets/b530ba12-a492-4a65-ad68-35ec770ec0b1)
+![屏幕截图 2025-05-30 175037](https://github.com/user-attachments/assets/9c2eeffb-65c4-4c1e-91e9-266cabadbdea)
+![屏幕截图 2025-05-30 174145](https://github.com/user-attachments/assets/83f60645-e6ea-48b4-befb-535ef4338d6f)
+
 
 ## 🛠️ 技术栈
 
